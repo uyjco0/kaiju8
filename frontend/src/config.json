@@ -1,0 +1,7 @@
+{
+  "//__comment_1": "The Websocket location. It specifies a secure websocket (i.e. 'wss' instead of 'ws')",
+  "WS_URL": "wss://YOUR_OWN_DOMAIN_HERE/kaiju8",
+
+  "//__comment_2": "Delimiter (separator) used to enconde a chat message into a string",
+  "MSG_SEP": "<#>"
+}

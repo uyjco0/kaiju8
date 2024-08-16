@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  kaiju8_backend:
+    build:
+      context: ./
+      dockerfile: Dockerfile_dev
+    container_name: "kaiju8_backend"
+    depends_on:
+      - kaiju8_db
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    environment:
+      DB_HOST: "kaiju8_db"
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_NAME: ${POSTGRES_DB}
+    volumes:
+      - .:/app
+    networks:
+      - kaiju8_net
+    restart: "unless-stopped"
+
+  kaiju8_db:
+    image: postgres:latest
+    container_name: "kaiju8_db"
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/initdb.sql
+    restart: "unless-stopped"
+    networks:
+      - kaiju8_net
+
+volumes:
+  db_data:
+
+networks:
+  kaiju8_net:
+    driver: bridge
